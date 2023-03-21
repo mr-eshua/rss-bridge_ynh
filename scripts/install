@@ -15,7 +15,15 @@ source /usr/share/yunohost/helpers
 ynh_script_progression --message="Setting up source files..." --weight=3
 
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$install_dir"
+#ynh_setup_source --dest_dir="$install_dir"
+
+# Clone repo 
+git clone --quiet $repo_url -b $repo_branch "$install_dir"
+
+# Reset branch to the level of update we needed
+pushd "$install_dir"
+	git reset --hard --quiet $version_commit
+popd
 
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"

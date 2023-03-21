@@ -43,7 +43,24 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=2
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" --keep="whitelist.txt"
+	#ynh_setup_source --dest_dir="$install_dir" --keep="whitelist.txt"
+
+	pushd "$install_dir"
+    if [ ! `git rev-parse --is-inside-work-tree &> /dev/null` ]; then
+        # If current install is not a Git repo then init one
+        git init --quiet
+        if ! git config remote.origin.url > /dev/null; then
+            # If remote does not exist, add it
+            git remote add origin $repo_url
+        fi
+		git fetch origin --quiet
+    	git checkout -b $repo_branch --track origin/$repo_branch --force --quiet
+    fi
+    git fetch --quiet
+    git checkout $repo_branch --quiet
+    git pull --quiet
+    git reset --hard $version_commit --quiet
+    popd
 fi
 
 chmod -R o-rwx "$install_dir"

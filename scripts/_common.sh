@@ -4,6 +4,14 @@
 # COMMON VARIABLES
 #=================================================
 
+# repo
+repo_url="https://github.com/RSS-Bridge/rss-bridge.git"
+repo_branch="master"
+
+# commit hash
+# 21.03.2023
+version_commit="307f5865c0bd12c32e7c5bdc0869dd0dcd403e40"
+
 #=================================================
 # PERSONAL HELPERS
 #=================================================
